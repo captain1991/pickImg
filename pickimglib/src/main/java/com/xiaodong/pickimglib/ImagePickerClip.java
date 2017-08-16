@@ -67,6 +67,10 @@ public class ImagePickerClip {
         return new ImgPickerClipBuilder(this, mimeType);
     }
 
+    public ImgPickerClipBuilder builder(Set<MimeType> mimeType) {
+        return new ImgPickerClipBuilder(this, mimeType);
+    }
+
     @Nullable
     Activity getActivity(){
         return mContext.get();
@@ -74,6 +78,9 @@ public class ImagePickerClip {
 
     @Nullable
     Fragment getFragment(){
-        return mFragment.get();
+        if(mFragment!=null) {
+            return mFragment.get();
+        }
+        return null;
     }
 }

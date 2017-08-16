@@ -2,8 +2,11 @@ package com.xiaodong.pickimglib;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.StyleRes;
+import android.support.v4.app.Fragment;
 
+import com.xiaodong.pickimglib.activity.ClipImageActivity;
 import com.zhihu.matisse.MimeType;
 
 import java.util.Set;
@@ -19,8 +22,9 @@ public final class ImgPickerClipBuilder {
     private boolean mCountable;
     private ImgPickSpec mImgPickSpec;
     @StyleRes
-    public int themeId;
-    public int type=2;//1圆形 2方形
+    private int themeId;
+    private int type=2;//1圆形 2方形
+    private Uri uri;
     public ImgPickerClipBuilder(ImagePickerClip imagePickerClip, Set<MimeType> mMimeType) {
         this.imagePickerClip = imagePickerClip;
         this.mMimeType = mMimeType;
@@ -55,6 +59,11 @@ public final class ImgPickerClipBuilder {
         return this;
     }
 
+    public ImgPickerClipBuilder uri(Uri uri){
+        this.uri = uri;
+        return this;
+    }
+
     public void forResult(int requestCode){
         Activity activity = imagePickerClip.getActivity();
         if(activity==null){
@@ -65,7 +74,14 @@ public final class ImgPickerClipBuilder {
         }
         mImgPickSpec.type = type;
         mImgPickSpec.themeId = themeId;
-//        Intent intent = new Intent(activity,)
+        Intent intent = new Intent(activity,ClipImageActivity.class);
+        intent.setData(uri);
+        Fragment fragment = imagePickerClip.getFragment();
+        if(fragment!=null){
+            fragment.startActivityForResult(intent,requestCode);
+        }else {
+            activity.startActivityForResult(intent,requestCode);
+        }
 //
     }
 
