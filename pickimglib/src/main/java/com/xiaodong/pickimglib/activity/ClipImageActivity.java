@@ -20,7 +20,7 @@ import java.io.OutputStream;
 
 
 /**
- * 头像裁剪Activity
+ * ClipImageActivity
  */
 public class ClipImageActivity extends AppCompatActivity implements View.OnClickListener {
     private static final String TAG = "ClipImageActivity";
@@ -29,12 +29,12 @@ public class ClipImageActivity extends AppCompatActivity implements View.OnClick
     private ImageView back;
     private TextView btnCancel;
     private TextView btnOk;
-    //类别 1: qq, 2: weixin
+    // 1:qq,2:weixin
     private int type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        ImgPickSpec imgPickSpec = ImgPickSpec.getCleanInstance();
+        ImgPickSpec imgPickSpec = ImgPickSpec.newInstance();
         setTheme(imgPickSpec.themeId);
         super.onCreate(savedInstanceState);
         setContentView( R.layout.activity_clip_image);
@@ -42,16 +42,15 @@ public class ClipImageActivity extends AppCompatActivity implements View.OnClick
     }
 
     /**
-     * 初始化组件
      */
     public void initView() {
-        type = ImgPickSpec.getCleanInstance().type;
+        type = ImgPickSpec.newInstance().type;
+        Log.i(TAG,"initView_type:"+type);
         clipViewLayout1 = (ClipViewLayout) findViewById(R.id.clipViewLayout1);
         clipViewLayout2 = (ClipViewLayout) findViewById(R.id.clipViewLayout2);
 //        back = (ImageView) findViewById(R.id.iv_back);
         btnCancel = (TextView) findViewById(R.id.btn_cancel);
         btnOk = (TextView) findViewById(R.id.bt_ok);
-        //设置点击事件监听器
 //        back.setOnClickListener(this);
         btnCancel.setOnClickListener(this);
         btnOk.setOnClickListener(this);
@@ -61,15 +60,14 @@ public class ClipImageActivity extends AppCompatActivity implements View.OnClick
     protected void onResume() {
         super.onResume();
         Log.i(TAG, "image uri: "+getIntent().getData());
+        Log.i(TAG,"type:"+type);
         if (type == 1) {
             clipViewLayout1.setVisibility(View.VISIBLE);
             clipViewLayout2.setVisibility(View.GONE);
-            //设置图片资源
             clipViewLayout1.setImageSrc(getIntent().getData());
         } else {
             clipViewLayout2.setVisibility(View.VISIBLE);
             clipViewLayout1.setVisibility(View.GONE);
-            //设置图片资源
             clipViewLayout2.setImageSrc(getIntent().getData());
         }
     }
@@ -85,10 +83,8 @@ public class ClipImageActivity extends AppCompatActivity implements View.OnClick
 
 
     /**
-     * 生成Uri并且通过setResult返回给打开的activity
      */
     private void generateUriAndReturn() {
-        //调用返回剪切图
         Bitmap zoomedCropBitmap;
         if (type == 1) {
             zoomedCropBitmap = clipViewLayout1.clip();

@@ -17,6 +17,14 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    lintOptions {
+        abortOnError false
+    }
+
+    task javadoc(type: Javadoc) {
+        options.encoding "UTF-8"
+        options.charSet 'UTF-8'
+    }
 }
 
 dependencies {
@@ -28,5 +36,6 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     compile 'com.github.bumptech.glide:glide:3.7.0'
+//    compile 'com.yxd.util:pickClipImg:1.0.0'
     compile project(':pickimglib')
 }

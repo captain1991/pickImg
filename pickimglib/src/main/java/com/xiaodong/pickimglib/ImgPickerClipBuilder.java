@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.StyleRes;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 
 import com.xiaodong.pickimglib.activity.ClipImageActivity;
 import com.zhihu.matisse.MimeType;
@@ -28,8 +29,7 @@ public final class ImgPickerClipBuilder {
     public ImgPickerClipBuilder(ImagePickerClip imagePickerClip, Set<MimeType> mMimeType) {
         this.imagePickerClip = imagePickerClip;
         this.mMimeType = mMimeType;
-        this.mImgPickSpec =  ImgPickSpec.getCleanInstance();
-
+        this.mImgPickSpec=ImgPickSpec.getCleanInstance();
     }
 
     /**
@@ -72,8 +72,8 @@ public final class ImgPickerClipBuilder {
         if (themeId == 0) {
             themeId = com.zhihu.matisse.R.style.Matisse_Zhihu;
         }
-        mImgPickSpec.type = type;
-        mImgPickSpec.themeId = themeId;
+        mImgPickSpec.type=type;
+        mImgPickSpec.themeId=themeId;
         Intent intent = new Intent(activity,ClipImageActivity.class);
         intent.setData(uri);
         Fragment fragment = imagePickerClip.getFragment();

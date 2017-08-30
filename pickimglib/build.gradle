@@ -1,4 +1,6 @@
 apply plugin: 'com.android.library'
+apply plugin: 'maven'
+apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion 25
@@ -19,6 +21,17 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    task javadoc(type: Javadoc){
+        options.encoding "UTF-8"
+        options.charSet'UTF-8'
+        failOnError false
+    }
+
 }
 
 dependencies {
@@ -29,4 +42,13 @@ dependencies {
     compile 'com.android.support:appcompat-v7:25.3.1'
     compile 'com.zhihu.android:matisse:0.4.3'//图片选择库
     testCompile 'junit:junit:4.12'
+}
+
+publish {
+    userOrg = 'yinxiaodong2017'
+    groupId = 'com.yxd.util'
+    artifactId = 'pickClipImg'
+    version = '1.0.0'
+    description = 'pick and clip image frome phone'
+    website = "https://github.com/captain1991/pickImg" //${rootProject.name}
 }

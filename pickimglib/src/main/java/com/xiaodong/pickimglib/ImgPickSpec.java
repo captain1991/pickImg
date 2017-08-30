@@ -9,25 +9,25 @@ import android.support.annotation.StyleRes;
 public class ImgPickSpec {
     @StyleRes
     public int themeId;
-    public int type=2;//1圆形 2方形
+    public int type;//1圆形 2方形
 
     private static ImgPickSpec mImgPickSpec;
     private ImgPickSpec(){}
 
-//    public static ImgPickSpec getInstance(){
-//        if(mImgPickSpec == null){
-//            synchronized(ImgPickSpec.class){
-//                if(mImgPickSpec==null){
-//                    mImgPickSpec = new ImgPickSpec();
-//                }
-//            }
-//        }
-//        return mImgPickSpec;
-//    }
-    //推荐使用静态内部类创建单例
     public static ImgPickSpec newInstance(){
-        return InstanceHolder.INSTANCE;
+        if(mImgPickSpec == null){
+            synchronized(ImgPickSpec.class){
+                if(mImgPickSpec==null){
+                    mImgPickSpec = new ImgPickSpec();
+                }
+            }
+        }
+        return mImgPickSpec;
     }
+    //use this method create instance
+//    public static ImgPickSpec newInstance(){
+//        return InstanceHolder.INSTANCE;
+//    }
 
     public static ImgPickSpec getCleanInstance(){
         newInstance().reset();
