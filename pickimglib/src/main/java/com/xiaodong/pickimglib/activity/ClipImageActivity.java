@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.xiaodong.pickimglib.ImgPickSpec;
 import com.xiaodong.pickimglib.R;
+import com.xiaodong.pickimglib.view.ClipType;
 import com.xiaodong.pickimglib.view.ClipViewLayout;
 
 import java.io.File;
@@ -26,11 +27,12 @@ public class ClipImageActivity extends AppCompatActivity implements View.OnClick
     private static final String TAG = "ClipImageActivity";
     private ClipViewLayout clipViewLayout1;
     private ClipViewLayout clipViewLayout2;
+    private ClipViewLayout clipViewLayout3;
     private ImageView back;
     private TextView btnCancel;
     private TextView btnOk;
     // 1:qq,2:weixin
-    private int type;
+    private ClipType type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public class ClipImageActivity extends AppCompatActivity implements View.OnClick
         Log.i(TAG,"initView_type:"+type);
         clipViewLayout1 = (ClipViewLayout) findViewById(R.id.clipViewLayout1);
         clipViewLayout2 = (ClipViewLayout) findViewById(R.id.clipViewLayout2);
+        clipViewLayout3 = (ClipViewLayout) findViewById(R.id.clipViewLayout3);
 //        back = (ImageView) findViewById(R.id.iv_back);
         btnCancel = (TextView) findViewById(R.id.btn_cancel);
         btnOk = (TextView) findViewById(R.id.bt_ok);
@@ -61,14 +64,21 @@ public class ClipImageActivity extends AppCompatActivity implements View.OnClick
         super.onResume();
         Log.i(TAG, "image uri: "+getIntent().getData());
         Log.i(TAG,"type:"+type);
-        if (type == 1) {
+        if (type == ClipType.CIRCLE) {
             clipViewLayout1.setVisibility(View.VISIBLE);
             clipViewLayout2.setVisibility(View.GONE);
+            clipViewLayout3.setVisibility(View.GONE);
             clipViewLayout1.setImageSrc(getIntent().getData());
-        } else {
+        } else if(type == ClipType.RECTANGLE){
             clipViewLayout2.setVisibility(View.VISIBLE);
             clipViewLayout1.setVisibility(View.GONE);
+            clipViewLayout3.setVisibility(View.GONE);
             clipViewLayout2.setImageSrc(getIntent().getData());
+        }else if(type == ClipType.FREEDOM){
+            clipViewLayout2.setVisibility(View.GONE);
+            clipViewLayout1.setVisibility(View.GONE);
+            clipViewLayout3.setVisibility(View.VISIBLE);
+            clipViewLayout3.setImageSrc(getIntent().getData());
         }
     }
 
@@ -86,10 +96,12 @@ public class ClipImageActivity extends AppCompatActivity implements View.OnClick
      */
     private void generateUriAndReturn() {
         Bitmap zoomedCropBitmap;
-        if (type == 1) {
+        if (type == ClipType.CIRCLE) {
             zoomedCropBitmap = clipViewLayout1.clip();
-        } else {
+        } else if(type == ClipType.RECTANGLE){
             zoomedCropBitmap = clipViewLayout2.clip();
+        }else{
+            zoomedCropBitmap = clipViewLayout3.clip();
         }
         if (zoomedCropBitmap == null) {
             Log.e("android", "zoomedCropBitmap == null");

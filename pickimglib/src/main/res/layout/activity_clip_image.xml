@@ -20,7 +20,8 @@
         android:layout_weight="1"
         app:clipBorderWidth="2dp"
         app:clipType="circle"
-        app:mHorizontalPadding="30dp" />
+        app:mHorizontalPadding="30dp"
+        android:visibility="gone"/>
 
     <!--矩形裁剪框示例 -->
     <com.xiaodong.pickimglib.view.ClipViewLayout
@@ -31,7 +32,18 @@
         app:clipBorderWidth="2dp"
         app:clipType="rectangle"
         app:mHorizontalPadding="30dp"
-        android:visibility="gone"
+        android:visibility="visible"
+        />
+    <!--矩形任意比例裁剪框示例 -->
+    <com.xiaodong.pickimglib.view.ClipViewLayout
+        android:id="@+id/clipViewLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        app:clipBorderWidth="2dp"
+        app:clipType="freedom"
+        app:mHorizontalPadding="30dp"
+        android:visibility="visible"
         />
 
     <RelativeLayout

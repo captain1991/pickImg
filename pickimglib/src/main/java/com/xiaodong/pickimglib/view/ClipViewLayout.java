@@ -18,11 +18,13 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 
+import com.xiaodong.pickimglib.ImgPickSpec;
 import com.xiaodong.pickimglib.R;
 
 import java.io.IOException;
@@ -32,8 +34,8 @@ import java.io.IOException;
  * 头像上传原图裁剪容器
  */
 public class ClipViewLayout extends RelativeLayout {
-    private ImageView imageView;
-    private ClipView clipView;
+    private ImageView imageView;//加载图片的ImageView
+    private ClipViewInterface clipView;//遮挡在图片前面的半透明view
     private float mHorizontalPadding;
     private float mVerticalPadding;
     private Matrix matrix = new Matrix();
@@ -69,11 +71,16 @@ public class ClipViewLayout extends RelativeLayout {
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 50, getResources().getDisplayMetrics()));
         int clipBorderWidth = array.getDimensionPixelSize(R.styleable.ClipViewLayout_clipBorderWidth,
                 (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 1, getResources().getDisplayMetrics()));
-        int clipType = array.getInt(R.styleable.ClipViewLayout_clipType, 1);
+        int clipType = array.getInt(R.styleable.ClipViewLayout_clipType, 2);
 
         array.recycle();
-        clipView = new ClipView(context);
-        clipView.setClipType(clipType == 1 ? ClipView.ClipType.CIRCLE : ClipView.ClipType.RECTANGLE);
+//        clipView = new ClipView(context);
+        if(clipType==3){
+            clipView = new ClipViewFreedom(context);
+        }else {
+            clipView = new ClipView(context);
+            clipView.setClipType(clipType == 1 ? ClipType.CIRCLE : ClipType.RECTANGLE);
+        }
         clipView.setClipBorderWidth(clipBorderWidth);
         clipView.setmHorizontalPadding(mHorizontalPadding);
         imageView = new ImageView(context);
@@ -81,7 +88,10 @@ public class ClipViewLayout extends RelativeLayout {
                 android.view.ViewGroup.LayoutParams.MATCH_PARENT,
                 android.view.ViewGroup.LayoutParams.MATCH_PARENT);
         this.addView(imageView, lp);
-        this.addView(clipView, lp);
+        if(clipView instanceof View){
+            this.addView((View) clipView, lp);
+        }
+
     }
 
 
@@ -312,8 +322,9 @@ public class ClipViewLayout extends RelativeLayout {
         Bitmap cropBitmap = null;
         Bitmap zoomedCropBitmap = null;
         try {
+
             cropBitmap = Bitmap.createBitmap(imageView.getDrawingCache(), rect.left, rect.top, rect.width(), rect.height());
-            zoomedCropBitmap = zoomBitmap(cropBitmap, 200, 200);
+            zoomedCropBitmap = zoomBitmap(cropBitmap, ImgPickSpec.getCleanInstance().width, ImgPickSpec.getCleanInstance().height);
         } catch (Exception e) {
             e.printStackTrace();
         }

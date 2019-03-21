@@ -15,8 +15,9 @@ import android.view.View;
 import android.view.WindowManager;
 
 /**
+ * 遮挡在图片前面的半透明view
  */
-public class ClipView extends View {
+public class ClipView extends View implements  ClipViewInterface{
     private Paint paint = new Paint();
     private Paint borderPaint = new Paint();
     private float mHorizontalPadding;
@@ -69,6 +70,7 @@ public class ClipView extends View {
      *
      * @return
      */
+    @Override
     public Rect getClipRect() {
         Rect rect = new Rect();
         rect.left = (this.getWidth() / 2 - clipRadiusWidth);
@@ -82,6 +84,7 @@ public class ClipView extends View {
      *
      * @param clipBorderWidth
      */
+    @Override
     public void setClipBorderWidth(int clipBorderWidth) {
         this.clipBorderWidth = clipBorderWidth;
         borderPaint.setStrokeWidth(clipBorderWidth);
@@ -92,6 +95,7 @@ public class ClipView extends View {
      *
      * @param mHorizontalPadding
      */
+    @Override
     public void setmHorizontalPadding(float mHorizontalPadding) {
         this.mHorizontalPadding = mHorizontalPadding;
         this.clipRadiusWidth = (int) (getScreenWidth(getContext()) - 2 * mHorizontalPadding) / 2;
@@ -115,13 +119,8 @@ public class ClipView extends View {
      *
      * @param clipType
      */
+    @Override
     public void setClipType(ClipType clipType) {
         this.clipType = clipType;
-    }
-
-    /**
-     */
-    public enum ClipType {
-        CIRCLE, RECTANGLE
     }
 }

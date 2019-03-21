@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.xiaodong.pickimglib.activity.ClipImageActivity;
+import com.xiaodong.pickimglib.view.ClipType;
 import com.zhihu.matisse.MimeType;
 
 import java.util.Set;
@@ -22,9 +23,11 @@ public final class ImgPickerClipBuilder {
     private int mMaxSelectable;
     private boolean mCountable;
     private ImgPickSpec mImgPickSpec;
+    private int width = 200;
+    private int height = 200;
     @StyleRes
     private int themeId;
-    private int type=2;//1圆形 2方形
+    private ClipType type=ClipType.RECTANGLE;//1圆形 2方形
     private Uri uri;
     public ImgPickerClipBuilder(ImagePickerClip imagePickerClip, Set<MimeType> mMimeType) {
         this.imagePickerClip = imagePickerClip;
@@ -54,13 +57,19 @@ public final class ImgPickerClipBuilder {
         return this;
     }
 
-    public ImgPickerClipBuilder type(int type){
+    public ImgPickerClipBuilder type(ClipType type){
         this.type = type;
         return this;
     }
 
     public ImgPickerClipBuilder uri(Uri uri){
         this.uri = uri;
+        return this;
+    }
+
+    public ImgPickerClipBuilder overWriteWH(int width,int height){
+        this.width = width;
+        this.height = height;
         return this;
     }
 
@@ -74,6 +83,8 @@ public final class ImgPickerClipBuilder {
         }
         mImgPickSpec.type=type;
         mImgPickSpec.themeId=themeId;
+        mImgPickSpec.height = height;
+        mImgPickSpec.width = width;
         Intent intent = new Intent(activity,ClipImageActivity.class);
         intent.setData(uri);
         Fragment fragment = imagePickerClip.getFragment();
